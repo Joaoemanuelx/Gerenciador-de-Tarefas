@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DBURL")
+}
+
+model Tarefa{
+  id    String  @id @default(uuid())
+  nome  String 
+  descricao String 
+  status Status @default(Pendente)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  userId  String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id    String  @id @default(uuid())
+  name  String  
+  email  String  @unique  
+  senha String  
+  role  Role  @default(Usuario)
+  createdAt DateTime  @default(now())
+  
+  tarefas Tarefa[]
+}
+
+enum Status {
+  Feito
+  Pendente
+}
+
+enum Role {
+  Usuario
+  Admin
+}
