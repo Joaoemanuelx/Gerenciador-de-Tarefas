@@ -73,4 +73,20 @@ export class UserService {
             createdAt: deletedUser.createdAt
         };
     }
+
+    async listarUsuarioPorId(id: string): Promise<OutputUserDTO> {
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            }
+        });
+        if (!user) {
+            throw new Error("Usuário não encontrado");
+        }
+        return {
+            name: user.name,
+            email: user.email,
+            createdAt: user.createdAt
+        };
+    }
 }

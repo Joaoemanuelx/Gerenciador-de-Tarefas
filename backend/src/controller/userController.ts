@@ -1,9 +1,7 @@
 import { UserService } from "../services/userService.js";
 import { Request, Response } from "express";
+import { UserParams } from "../types/userTypes.js";
 
-interface DeleteUserParams {
-    id: string;
-}
 
 const userService = new UserService();
 export class UserController {
@@ -28,7 +26,18 @@ export class UserController {
         }
     }
 
-    async apagarUsuario(req: Request<DeleteUserParams>, res: Response) {
+    async listarUsuarioId(req: Request<UserParams>, res: Response) {
+        try {
+            const { id } = req.params;
+            const user = await userService.listarUsuarioPorId(id);
+            res.status(200).json(user);
+        } catch (error: any) {
+            console.error(error);
+            res.status(500).json({ error: error.message || "Erro ao listar usuário por ID" });
+        }
+    }
+
+    async apagarUsuario(req: Request<UserParams>, res: Response) {
         try {
             const { id } = req.params;
             const user = await userService.apagarUsuario(id);
