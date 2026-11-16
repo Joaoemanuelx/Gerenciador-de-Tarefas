@@ -12,3 +12,4 @@ tarefaRoutes.post("/tarefas", validateSchema(createTarefaSchema), (req, res) => 
 tarefaRoutes.get<TarefaParams>("/tarefas/:id", (req, res) => tarefaController.listarTarefaId(req, res));
 tarefaRoutes.patch<TarefaParams>("/tarefas/:id", validateSchema(updateTarefaSchema), (req, res) => tarefaController.updateTarefa(req, res));
 tarefaRoutes.delete<TarefaParams>("/tarefas/:id", (req, res) => tarefaController.deleteTarefa(req, res));
+export default tarefaRoutes;

@@ -21,7 +21,7 @@ model Tarefa{
 
 model User {
   id    String  @id @default(uuid())
-  name  String  
+  nome  String  @unique
   email  String  @unique  
   senha String  
   role  Role  @default(Usuario)

@@ -5,18 +5,18 @@ import {hash} from "bcryptjs";
 type UserRecord = Awaited<ReturnType<typeof prisma.user.findMany>>[number];
 
 interface CreateUserDTO {
-    name: string;
+    nome: string;
     email: string;
     password: string;
 }
 interface OutputUserDTO {
-    name: string;
+    nome: string;
     email: string;
     createdAt: Date;
 }
 
 export class UserService {
-    async createUser({name, email, password}: CreateUserDTO): Promise<OutputUserDTO> {
+    async createUser({nome, email, password}: CreateUserDTO): Promise<OutputUserDTO> {
         const userAlreadyExists = await prisma.user.findUnique({
             where: {
                 email
@@ -29,13 +29,13 @@ export class UserService {
         const hashedPassword = await hash(password, 8);
         const user = await prisma.user.create({
             data: {
-                name,
+                nome,
                 email,
                 senha: hashedPassword
             }
         });
         return {
-            name: user.name,
+            nome: user.nome,
             email: user.email,
             createdAt: user.createdAt
         };
@@ -47,7 +47,7 @@ export class UserService {
             throw new Error("Nenhum usuário encontrado");
         }
         return users.map((user: UserRecord) => ({
-            name: user.name,
+            nome: user.nome,
             email: user.email,
             createdAt: user.createdAt
         }));
@@ -68,7 +68,7 @@ export class UserService {
             }
         });
         return {
-            name: deletedUser.name,
+            nome: deletedUser.nome,
             email: deletedUser.email,
             createdAt: deletedUser.createdAt
         };
@@ -84,7 +84,7 @@ export class UserService {
             throw new Error("Usuário não encontrado");
         }
         return {
-            name: user.name,
+            nome: user.nome,
             email: user.email,
             createdAt: user.createdAt
         };

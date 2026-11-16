@@ -7,8 +7,13 @@ const tarefaService = new TarefaService();
 export class TarefaController {
     async createTarefa(req: Request, res: Response) {
         try {
-            const { nome, descricao, userId } = req.body;
-            const tarefa = await tarefaService.createTarefa({ nome, descricao, userId });
+            if (!req.user) {
+            return res.status(401).json({
+            message: "Erro na autenticação do usuário"
+            });
+            }
+            const { nome, descricao } = req.body;
+            const tarefa = await tarefaService.createTarefa({ nome, descricao, userId: req.user.id });
             res.status(201).json(tarefa);
         } catch (error: any) {
             console.error(error);
